@@ -6,5 +6,6 @@ namespace __App.Scripts.UI
         SETTINGS,
         VICTORY,
         SELECT_LEVEL,
+        PAUSE
     }
 }

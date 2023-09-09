@@ -1,10 +1,12 @@
+using System.Collections;
+using System.Collections.Generic;
+using __App.Scripts.UI;
+using CookingStar;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-using System.Linq;
-using System.Collections.Generic;
 
-namespace CookingStar
+namespace __App.Scripts.Generic
 {
 	public class MainGameController : MonoBehaviour
 	{
@@ -70,6 +72,7 @@ namespace CookingStar
 		//private int totalMoneyLost;
 		static public bool gameIsFinished;      //Flag
 		static public bool gameIsStarted;       //Flag
+		private bool _isDoubleMoneyCollect = false;       //Flag
 
 		///////////////////////////////////////
 		static public int slotState = 0;                //available slots for product creation (same as delivery queue)
@@ -77,7 +80,7 @@ namespace CookingStar
 
 
 		[Header("UI Objects")]
-		public GameObject gameoverPanelHolder;
+		//public GameObject gameoverPanelHolder;
 		public Text moneyText;
 		public Text missionText;
 		public Text timeText;
@@ -90,6 +93,7 @@ namespace CookingStar
 		public GameObject levelTargetUI;
 		public GameObject retryButton;
 		public GameObject levelTimeHolder;
+		public TextMeshProUGUI moneyCount;
 
 		//Shrink game view to be fully viewable on extra thin devices/Screens
 		private Camera mainCam;
@@ -145,7 +149,7 @@ namespace CookingStar
 			slotState = 0;
 			maxSlotState = 6;
 
-			gameoverPanelHolder.SetActive(false);
+			//gameoverPanelHolder.SetActive(false);
 			totalPenalties = 0;
 
 			deliveryQueueIsFull = false;
@@ -483,7 +487,10 @@ namespace CookingStar
 				endPanelLabelUI.text = "Out of Time!";
 				print("Time is up! You have failed :(");    //debug the result
 				gameIsFinished = true;                      //announce the new status to other classes
-				gameoverPanelHolder.SetActive(true);        //show the endGame plane
+				//gameoverPanelHolder.SetActive(true);        //show the endGame plane
+				UIController.instance.ShowScreen(ScreensTypes.VICTORY);
+				UIController.instance.SetPlayerMoneyCount(totalMoneyMade);
+				
 				missionTargetUI.text = totalMoneyMade + " of " + requiredBalance;
 				missionTimeUI.text = (int)Time.timeSinceLevelLoad + " of " + availableTime;
 				resultStarsUI.sprite = availableStarIcons[0];
@@ -507,7 +514,10 @@ namespace CookingStar
 
 				print("Wow, You beat the level! :)");
 				gameIsFinished = true;
-				gameoverPanelHolder.SetActive(true);
+				//gameoverPanelHolder.SetActive(true);
+				UIController.instance.ShowScreen(ScreensTypes.VICTORY);
+				UIController.instance.SetPlayerMoneyCount(levelPrize);
+
 				missionTargetUI.text = totalMoneyMade + " of " + requiredBalance;
 				missionTimeUI.text = (int)Time.timeSinceLevelLoad + " of " + availableTime;
 				resultStarsUI.sprite = availableStarIcons[GetLevelStars()];
@@ -536,7 +546,8 @@ namespace CookingStar
 				timeText.text = "00:00";
 				SfxPlayer.instance.PlaySfx(4);
 				//Show EngGame panel
-				gameoverPanelHolder.SetActive(true);
+				//gameoverPanelHolder.SetActive(true);
+				UIController.instance.ShowScreen(ScreensTypes.VICTORY);
 				//Show Stats
 				missionTargetUI.text = "N/A";
 				missionTimeUI.text = "N/A";
@@ -565,9 +576,7 @@ namespace CookingStar
 
 			return stars;
 		}
-
-
-
+		
 		public void ForceCustomersToLeave()
 		{
 			GameObject[] customers = GameObject.FindGameObjectsWithTag("customer");
@@ -596,6 +605,18 @@ namespace CookingStar
 				PlayerPrefs.SetInt("userLevelAdvance", userLevelAdvance);
 			}
 		}
+		
+		public void DoubleReward()
+		{
+			if(_isDoubleMoneyCollect) return;
+			int levelPrize = PlayerPrefs.GetInt("careerPrize");
+			int currentMoney = PlayerPrefs.GetInt("PlayerMoney");
+			currentMoney += levelPrize;
+			PlayerPrefs.SetInt("PlayerMoney", currentMoney);
+			levelPrize *= 2;
+			UIController.instance.SetPlayerMoneyCount(levelPrize);
+			_isDoubleMoneyCollect = true;
+		}
 
 
 		///***********************************************************************
@@ -610,5 +631,6 @@ namespace CookingStar
 			if (!GetComponent<AudioSource>().isPlaying)
 				GetComponent<AudioSource>().Play();
 		}
+		
 	}
 }

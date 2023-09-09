@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using __App.Scripts.Generic;
 using Unity.Collections;
 
 namespace CookingStar

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using CookingStar;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,6 +10,10 @@ namespace __App.Scripts.UI
     public class UIController : MonoBehaviour
     {
         [SerializeField] private List<UIScreen> _screens;
+        [Space(10)]
+        [Header("Can be null")] 
+        [SerializeField] private TextMeshProUGUI _moneyCount;
+        
         private List<UIScreen> _activeScreens = new ();
         
         public static UIController instance;
@@ -16,11 +21,6 @@ namespace __App.Scripts.UI
         private void Awake()
         {
             instance = this;
-        }
-        
-        private void Start()
-        {
-            LoadMenu();/////////// Menu loader
         }
 
         /*public void LoadShop()
@@ -38,13 +38,13 @@ namespace __App.Scripts.UI
             StartCoroutine(LoadScreenDelayed(ScreensTypes.SELECT_LEVEL));
         }
 
-        public void LoadFreePlay()
+        /*public void LoadFreePlay()
         {
             SfxPlayer.instance.PlaySfx(0);
             PlayerPrefs.SetString("gameMode", "FREEPLAY");
             PlayerPrefs.SetInt("IsTutorial", 0);
             StartCoroutine(LoadSceneDelayed("Game"));
-        }
+        }*/
 
         /*public void LoadTutorial()
         {
@@ -64,10 +64,28 @@ namespace __App.Scripts.UI
         public void LoadMenu()
         {
             SfxPlayer.instance.PlaySfx(0);
-            //StartCoroutine(LoadSceneDelayed("Menu"));
-            StartCoroutine(LoadScreenDelayed(ScreensTypes.MENU));
+            if (SceneManager.GetActiveScene().name != "Menu")
+            {
+                StartCoroutine(LoadSceneDelayed("Menu"));
+            }
+            else
+            {
+                StartCoroutine(LoadScreenDelayed(ScreensTypes.MENU));
+                var money = GetPlayerMoneyCount();
+                SetPlayerMoneyCount(money);
+            }
         }
 
+        public void SetPlayerMoneyCount(int count)
+        {
+            _moneyCount.text = count.ToString();
+        }
+        
+        public int GetPlayerMoneyCount()
+        {
+            return PlayerPrefs.GetInt("PlayerMoney", 0);
+        }
+        
         public void LoadSettings()
         {
             SfxPlayer.instance.PlaySfx(0);
@@ -76,7 +94,7 @@ namespace __App.Scripts.UI
 
         public IEnumerator LoadSceneDelayed(string sceneToLead, float delay = 0.25f)
         {
-            ScreensManager.instance.CloseLastScreen();
+            CloseLastScreen();
             yield return new WaitForSeconds(delay);
             SceneManager.LoadScene(sceneToLead);
         }
@@ -120,14 +138,16 @@ namespace __App.Scripts.UI
 
         public void DisplayPausePanel()
         {
-            GameObject pausePanel = GameObject.FindGameObjectWithTag("PausePanelUI");
-            pausePanel.transform.GetChild(0).gameObject.SetActive(true);
+            //GameObject pausePanel = GameObject.FindGameObjectWithTag("PausePanelUI");
+            //pausePanel.transform.GetChild(0).gameObject.SetActive(true);
+            ShowScreen(ScreensTypes.PAUSE);
         }
 
         public void HidePausePanel()
         {
-            GameObject pausePanel = GameObject.FindGameObjectWithTag("PausePanelUI");
-            pausePanel.transform.GetChild(0).gameObject.SetActive(false);
+            //GameObject pausePanel = GameObject.FindGameObjectWithTag("PausePanelUI");
+            //pausePanel.transform.GetChild(0).gameObject.SetActive(false);
+            HideScreen(ScreensTypes.PAUSE);
         }
         
         public UIScreen GetScreenByType(ScreensTypes screenType)

@@ -94,7 +94,6 @@ namespace CookingStar
                 missionNameUI.text = "Locked";
                 //set 0-star image
                 missionStarsUI.sprite = availableMissionStars[0];
-
             }
         }
 
