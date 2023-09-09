@@ -1,13 +1,11 @@
 using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
-using UnityEngine.SceneManagement;
+using TMPro;
 
 namespace CookingStar
 {
 	public class MenuController : MonoBehaviour
 	{
-		public Text playerCoinsUI;
+		public TextMeshProUGUI playerCoinsUI;
 
 		void Awake()
 		{

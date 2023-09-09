@@ -1,10 +1,6 @@
 using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
-using System;
-using UnityEngine.SceneManagement;
 
-namespace CookingStar
+namespace __App.Scripts.Career
 {
 	public class CareerMapManager : MonoBehaviour
 	{
