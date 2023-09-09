@@ -110,11 +110,11 @@ namespace __App.Scripts.Generic
 			Init();
 
 			//New
-			FixCamSizeInThinDevices();
+			//FixCamSizeInThinDevices();
 		}
 
 
-		public void FixCamSizeInThinDevices()
+		/*public void FixCamSizeInThinDevices()
 		{
 			mainCam = Camera.main;
 			currentScreenRatio = Screen.height / (Screen.width + 0.001f);
@@ -129,7 +129,7 @@ namespace __App.Scripts.Generic
 			{
 				mainCam.orthographicSize = defaultCamSize + (ratioDiff * 2.5f);
 			}
-		}
+		}*/
 
 
 		public IEnumerator EnableDelayedStart()

@@ -1,12 +1,10 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using __App.Scripts.Career;
+using CookingStar;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace CookingStar
+namespace __App.Scripts.Career
 {
     public class MissionButtonController : MonoBehaviour
     {
@@ -24,6 +22,7 @@ namespace CookingStar
             Environment_1 = 0,
             Environment_2 = 1,
         }
+        
         public environments levelLocation = environments.Environment_1;
         public int[] availableProductsInMission;
 
