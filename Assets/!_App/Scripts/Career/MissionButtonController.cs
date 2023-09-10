@@ -1,4 +1,5 @@
 using System;
+using __App.Scripts.Generic;
 using CookingStar;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,14 +18,14 @@ namespace __App.Scripts.Career
         public bool canUseCandy = true;
 
         //Level location (main BG image)
-        public enum environments
+        /*public enum environments
         {
             Environment_1 = 0,
             Environment_2 = 1,
-        }
+        }*/
         
-        public environments levelLocation = environments.Environment_1;
-        public int[] availableProductsInMission;
+        //public environments levelLocation = environments.Environment_1;
+        //public int[] availableProductsInMission;
 
         [Header("Mission Components/UI")]
         public Button missionButton;
@@ -105,9 +106,11 @@ namespace __App.Scripts.Career
 
             //Sfx
             SfxPlayer.instance.PlaySfx(0);
-
+            
+            var mission = MissionManager.instance.GetMissionById(missionID);
+            MissionManager.instance.SelectLevel(mission);
             //save the game mode
-            PlayerPrefs.SetString("gameMode", "CAREER");
+            /*PlayerPrefs.SetString("gameMode", "CAREER");
             PlayerPrefs.SetInt("careerLevelID", missionID);
 
             //save level prize
@@ -128,6 +131,7 @@ namespace __App.Scripts.Career
             PlayerPrefs.SetInt("levelLocation", (int)levelLocation);
 
             Invoke("LoadSceneDelayed", 0.5f);
+            */
         }
 
 

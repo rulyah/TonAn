@@ -17,7 +17,7 @@ namespace __App.Scripts.Career
 				userLevelAdvance = 0; //default. only level 1 in open.
 
 			//Debug
-			userLevelAdvance = 8;
+			//userLevelAdvance = 8;
 		}
 	}
 }

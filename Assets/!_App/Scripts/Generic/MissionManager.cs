@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace __App.Scripts.Generic
 {
@@ -9,6 +10,8 @@ namespace __App.Scripts.Generic
         public static MissionManager instance;
 
         [SerializeField] private List<Mission> _missionList;
+        
+        public int _missionCount => _missionList.Count;
 
         private void Awake()
         {
@@ -34,6 +37,8 @@ namespace __App.Scripts.Generic
             PlayerPrefs.SetInt("canUseCandy", Convert.ToInt32(mission.canUseCandy));
 
             PlayerPrefs.SetInt("levelLocation", (int)mission.levelLocation);
+
+            SceneManager.LoadScene("Game");
         }
 
         public Mission GetMissionById(int id)
