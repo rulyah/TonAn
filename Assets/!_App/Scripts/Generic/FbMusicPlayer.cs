@@ -6,7 +6,7 @@ namespace CookingStar
 {
     public class FbMusicPlayer : MonoBehaviour
     {
-        public static FbMusicPlayer instance;
+        public static FbMusicPlayer instance { get; private set; }
         public AudioClip main;
         public AudioClip loop;
 
@@ -15,31 +15,38 @@ namespace CookingStar
 
         void Awake()
         {
-            DontDestroyOnLoad(this);
-            instance = this;
-
-            //Enable audio & music in the first run
-            if (!PlayerPrefs.HasKey("Inited"))
+            if (instance == null)
             {
-                print("Game is Inited!");
-                PlayerPrefs.SetInt("Inited", 1);
-                PlayerPrefs.SetInt("SoundState", 1);
-                PlayerPrefs.SetInt("MusicState", 1);
+                DontDestroyOnLoad(this);
+                instance = this;
+
+                //Enable audio & music in the first run
+                if (!PlayerPrefs.HasKey("Inited"))
+                {
+                    print("Game is Inited!");
+                    PlayerPrefs.SetInt("Inited", 1);
+                    PlayerPrefs.SetInt("SoundState", 1);
+                    PlayerPrefs.SetInt("MusicState", 1);
+                }
+
+                //fetch saved status
+                //Sound
+                if (PlayerPrefs.GetInt("SoundState") == 1)
+                    globalSoundState = true;
+                else
+                    globalSoundState = false;
+                //music
+                if (PlayerPrefs.GetInt("MusicState") == 0)
+                    ToggleMusic();
+
+                print("MusicPlayer Reporting: ");
+                print("globalSoundState: " + globalSoundState);
+                print("globalMusicState: " + PlayerPrefs.GetInt("MusicState"));
             }
-
-            //fetch saved status
-            //Sound
-            if (PlayerPrefs.GetInt("SoundState") == 1)
-                globalSoundState = true;
             else
-                globalSoundState = false;
-            //music
-            if (PlayerPrefs.GetInt("MusicState") == 0)
-                ToggleMusic();
-
-            print("MusicPlayer Reporting: ");
-            print("globalSoundState: " + globalSoundState);
-            print("globalMusicState: " + PlayerPrefs.GetInt("MusicState"));
+            {
+                Destroy(gameObject);
+            }
         }
 
         void Start()

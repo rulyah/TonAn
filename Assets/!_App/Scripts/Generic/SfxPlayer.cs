@@ -5,16 +5,23 @@ namespace CookingStar
 {
     public class SfxPlayer : MonoBehaviour
     {
-        public static SfxPlayer instance;
+        public static SfxPlayer instance { get; private set; }
 
         public AudioClip[] availableAudioclips;
         private AudioSource aso;
 
         private void Awake()
         {
-            instance = this;
-            aso = GetComponent<AudioSource>();
-            DontDestroyOnLoad(this.gameObject);
+            if (instance == null)
+            {
+                instance = this;
+                aso = GetComponent<AudioSource>();
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
 
         /// <summary>

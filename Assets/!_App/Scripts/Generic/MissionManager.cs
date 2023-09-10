@@ -7,7 +7,7 @@ namespace __App.Scripts.Generic
 {
     public class MissionManager : MonoBehaviour
     {
-        public static MissionManager instance;
+        public static MissionManager instance { get; private set; }
 
         [SerializeField] private List<Mission> _missionList;
         
@@ -15,8 +15,15 @@ namespace __App.Scripts.Generic
 
         private void Awake()
         {
-            DontDestroyOnLoad(gameObject);
-            instance = this;
+            if (instance == null)
+            {
+                DontDestroyOnLoad(gameObject);
+                instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
         
         public void SelectLevel(Mission mission)
